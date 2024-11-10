@@ -1,0 +1,53 @@
+name: my_member_link
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.3.4 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.2.2
+  mailer: ^6.2.0
+  shared_preferences: ^2.3.2
+  smooth_page_indicator: ^1.2.0+3
+  another_flushbar: ^1.10.24
+  uni_links: ^0.5.1
+  google_sign_in: ^6.1.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  
+
+flutter:
+  uses-material-design: true
+
+    # To add assets to your application, add an assets section, like this:
+  assets:
+  ##- assets/background.png
+ ## - assets/background2.png
+     - assets/logo.png
+     - assets/onboarding.gif
+     - assets/onboarding2.gif
+     - assets/onboarding3.gif
+     - assets/onboarding4.gif
+     - assets/log.gif
+
+
+  # An image asset can refer to one or more resolution-specific "variants", see
+  fonts:
+  - family: Nunito
+    fonts:
+    - asset: fonts/Nunito-Bold.ttf
+      weight: 700
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Nunito
+  #     fonts:
+  #       - asset: fonts/Nunito.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
