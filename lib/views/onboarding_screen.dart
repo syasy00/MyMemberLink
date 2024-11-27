@@ -11,7 +11,7 @@ class OnboardingScreen extends StatefulWidget {
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
-  final int _numPages = 4; // Number of onboarding pages
+  final int _numPages = 4;
 
   @override
   void dispose() {
@@ -22,8 +22,69 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
+      body: Stack(
+        children: [
+          PageView(
+            controller: _pageController,
+            children: [
+              _OnboardingPage(
+                backgroundColor: const LinearGradient(
+                  colors: [Color(0xFFE8F0FF), Color(0xFFF7FAFF)],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+                image: "assets/onboarding.gif",
+                title: "Welcome to MyMemberLink",
+                description:
+                    "Start your journey with us and explore the world of possibilities.",
+              ),
+              _OnboardingPage(
+                backgroundColor: const LinearGradient(
+                  colors: [Color(0xFFDDEFFF), Color(0xFFF7FAFF)],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+                image: "assets/onboarding2.gif",
+                title: "Connect with People",
+                description: "Join a community of learners and grow together.",
+              ),
+              _OnboardingPage(
+                backgroundColor: const LinearGradient(
+                  colors: [Color(0xFFE3F2FD), Color(0xFFF8FBFF)],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+                image: "assets/onboarding3.gif",
+                title: "Stay Alert with News",
+                description: "Stay updated with the latest news at your fingertips.",
+              ),
+              _OnboardingPage(
+                backgroundColor: const LinearGradient(
+                  colors: [Color(0xFFD1EFFF), Color(0xFFF7FAFF)],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+                image: "assets/onboarding4.gif",
+                title: "Achieve Your Goals",
+                description:
+                    "Set your goals and achieve them with the help of our resources.",
+              ),
+            ],
+          ),
+          _buildBottomNavigation(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBottomNavigation() {
+    return Positioned(
+      bottom: 30,
+      left: 20,
+      right: 20,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
           TextButton(
             onPressed: () {
               Navigator.pushReplacement(
@@ -31,110 +92,74 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 MaterialPageRoute(builder: (context) => const LoginScreen()),
               );
             },
-            child: const Text("Skip"),
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: PageView(
-              controller: _pageController,
-              children: [
-                _OnboardingPage(
-                  image: Image.asset("assets/onboarding.gif",
-                      width: 250, height: 250),
-                  title: "Welcome to MyMemberLink",
-                  description:
-                      "Start your journey with us and explore the world of possibilities.",
-                ),
-                _OnboardingPage(
-                  image: Image.asset("assets/onboarding2.gif",
-                      width: 250, height: 250),
-                  title: "Connect with People",
-                  description:
-                      "Join a community of learners and grow together.",
-                ),
-                _OnboardingPage(
-                  image: Image.asset("assets/onboarding3.gif",
-                      width: 250, height: 250),
-                  title: "Alert With New News",
-                  description: "Stay updated with the latest news.",
-                ),
-                _OnboardingPage(
-                  image: Image.asset("assets/onboarding4.gif",
-                      width: 250, height: 250),
-                  title: "Achieve Your Goals",
-                  description:
-                      "Set goals and achieve them with the help of our resources.",
-                ),
-              ],
+            child: const Text(
+              "Skip",
+              style: TextStyle(
+                color: Colors.blueAccent,
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
+              ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(30.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SmoothPageIndicator(
-                  controller: _pageController,
-                  count: 4,
-                  effect: ExpandingDotsEffect(
-                    activeDotColor: Color.fromARGB(255, 255, 134, 188),
-                    dotHeight: 8,
-                    dotWidth: 8,
-                    expansionFactor: 4,
-                    spacing: 4,
+          SmoothPageIndicator(
+            controller: _pageController,
+            count: _numPages,
+            effect: const ExpandingDotsEffect(
+              activeDotColor: Color(0xFF4A90E2),
+              dotColor: Colors.grey,
+              dotHeight: 8,
+              dotWidth: 8,
+              expansionFactor: 4,
+              spacing: 4,
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              if (_pageController.page == _numPages - 1) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LoginScreen(),
                   ),
-                ),
-                const SizedBox(height: 20),
-                GestureDetector(
-                  onTap: () {
-                    if (_pageController.page == _numPages - 1) {
-                      // If it's the last page, go to LoginScreen
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginScreen(),
-                        ),
-                      );
-                    } else {
-                      // Move to the next page
-                      _pageController.nextPage(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      );
-                    }
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 10.0),
-                    decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 255, 134, 188),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text(
-                          'Next',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        const Icon(
-                          Icons.arrow_forward,
-                          color: Colors.white,
-                          size: 24,
-                        ),
-                      ],
+                );
+              } else {
+                _pageController.nextPage(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                );
+              }
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              decoration: BoxDecoration(
+                color: const Color(0xFF4A90E2),
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                  ),
+                ],
+              ),
+              child: Row(
+                children: const [
+                  Text(
+                    "Next",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                ),
-              ],
+                  SizedBox(width: 8),
+                  Icon(
+                    Icons.arrow_forward,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -143,32 +168,52 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 }
 
-Widget _OnboardingPage(
-    {required Image image,
-    required String title,
-    required String description}) {
-  return Padding(
-    padding: const EdgeInsets.all(32.0),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        image,
-        const SizedBox(height: 20),
-        Text(
-          title,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-          ),
-          textAlign: TextAlign.center,
+class _OnboardingPage extends StatelessWidget {
+  final LinearGradient backgroundColor;
+  final String image;
+  final String title;
+  final String description;
+
+  const _OnboardingPage({
+    required this.backgroundColor,
+    required this.image,
+    required this.title,
+    required this.description,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(gradient: backgroundColor),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 50),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(image, width: 250, height: 250, fit: BoxFit.contain),
+            const SizedBox(height: 30),
+            Text(
+              title,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
+                color: Colors.black,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20),
+            Text(
+              description,
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.black54,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
-        const SizedBox(height: 20),
-        Text(
-          description,
-          style: const TextStyle(fontSize: 16, color: Colors.grey),
-          textAlign: TextAlign.center,
-        ),
-      ],
-    ),
-  );
+      ),
+    );
+  }
 }

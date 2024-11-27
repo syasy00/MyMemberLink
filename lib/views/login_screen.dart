@@ -35,7 +35,9 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: const Text("Login"),
         centerTitle: true,
       ),
@@ -174,53 +176,67 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  void onLogin() {
+ void onLogin() {
+  setState(() {
+    isLoggingIn = true;
+    emailError = "";
+    passwordError = "";
+  });
+
+  String email = emailcontroller.text;
+  String password = passwordcontroller.text;
+  bool isValid = true;
+
+  if (email.isEmpty) {
+    emailError = "Please enter email";
+    isValid = false;
+  } else if (!email.contains('@') || !email.contains('.com')) {
+    emailError = "Please enter a valid email";
+    isValid = false;
+  }
+
+  if (password.isEmpty) {
+    passwordError = "Please enter password";
+    isValid = false;
+  } else if (password.length < 8) {
+    passwordError = "Password must be at least 8 characters";
+    isValid = false;
+  }
+
+  if (!isValid) {
     setState(() {
-      isLoggingIn = true;
-      emailError = "";
-      passwordError = "";
+      isLoggingIn = false;
     });
-    String email = emailcontroller.text;
-    String password = passwordcontroller.text;
-    bool isValid = true;
+    return;
+  }
 
-    if (email.isEmpty) {
-      emailError = "Please enter email";
-      isValid = false;
-    } else if (!email.contains('@') || !email.contains('.com')) {
-      emailError = "Please enter a valid email";
-      isValid = false;
-    }
+  http.post(Uri.parse("${MyConfig.servername}/memberlink/api/login_user.php"),
+      body: {"email": email, "password": password}).then((response) async {
+    setState(() {
+      isLoggingIn = false;
+    });
 
-    if (password.isEmpty) {
-      passwordError = "Please enter password";
-      isValid = false;
-    } else if (password.length < 6) {
-      passwordError = "Password must be at least 8 characters";
-      isValid = false;
-    }
-
-    if (!isValid) {
-      setState(() {
-        isLoggingIn = false;
-      });
-      return;
-    }
-
-    http.post(Uri.parse("${MyConfig.servername}/memberlink/api/login_user.php"),
-        body: {"email": email, "password": password}).then((response) {
-      setState(() {
-        isLoggingIn = false;
-      });
+    if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
-      if (response.statusCode == 200 && data['status'] == "success") {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (content) => const MainScreen()));
+
+      if (data['status'] == "success") {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('username', data['username'] ?? "User");
+        await prefs.setString('useremail', email);
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const MainScreen()),
+        );
       } else {
         showLoginFailedDialog(context);
       }
-    });
-  }
+    } else {
+      showLoginFailedDialog(context);
+    }
+  });
+}
+
 
   Future<void> storeSharedPrefs(bool value, String email, String pass) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

@@ -16,6 +16,8 @@ dependencies:
   another_flushbar: ^1.10.24
   uni_links: ^0.5.1
   google_sign_in: ^6.1.4
+  image_picker: ^1.1.2
+  image_cropper: ^8.0.2
 
 dev_dependencies:
   flutter_test:
@@ -36,6 +38,9 @@ flutter:
      - assets/onboarding3.gif
      - assets/onboarding4.gif
      - assets/log.gif
+     - assets/news2.jpg
+     - assets/announcement.gif
+     - assets/user.jpg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

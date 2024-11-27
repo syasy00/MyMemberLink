@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // For storing the username locally
 import 'package:http/http.dart' as http;
 import 'package:my_member_link/myconfig.dart';
 import '../components/button.dart';
@@ -26,12 +27,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Register"),
+        backgroundColor: Colors.white,
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        // Wrap the body with SingleChildScrollView
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(32.0),
@@ -42,13 +44,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   padding: const EdgeInsets.all(30.0),
                   child: Column(
                     children: [
+                      const SizedBox(height: 10),
                       Image.asset(
                         "assets/logo.png",
                         width: 100,
                         height: 100,
                         fit: BoxFit.contain,
                       ),
-                      const SizedBox(width: 10),
+                      const SizedBox(height: 10),
                       const Text(
                         "MyMemberLink",
                         style: TextStyle(
@@ -60,7 +63,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 CustomInputField(
                   controller: namecontroller,
                   hintText: "Syu Syi",
@@ -269,64 +272,55 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  void userRegistration() {
+  void userRegistration() async {
     String name = namecontroller.text;
     String email = emailcontroller.text;
     String pass = passwordcontroller.text;
     http.post(
       Uri.parse("${MyConfig.servername}/memberlink/api/register_user.php"),
       body: {"name": name, "email": email, "password": pass},
-    ).then((response) {
+    ).then((response) async {
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         if (data['status'] == "success") {
+          // Save the username locally for future display
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setString('username', name);
+
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => const LoginScreen()),
           );
         } else {
           if (data['message'] == "Email already registered.") {
-            // Show a pop-up dialog if the email is already registered
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text("Registration Failed"),
-                  content: const Text(
-                      "The email is already registered. Please use a different email."),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop(); // Close the dialog
-                      },
-                      child: const Text("OK"),
-                    ),
-                  ],
-                );
-              },
-            );
+            _showErrorDialog("Registration Failed",
+                "The email is already registered. Please use a different email.");
           } else {
-            // General error message if registration fails for other reasons
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text("Registration Failed"),
-                  content: const Text("Registration failed. Please try again."),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop(); // Close the dialog
-                      },
-                      child: const Text("OK"),
-                    ),
-                  ],
-                );
-              },
-            );
+            _showErrorDialog(
+                "Registration Failed", "Registration failed. Please try again.");
           }
         }
       }
     });
+  }
+
+  void _showErrorDialog(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
