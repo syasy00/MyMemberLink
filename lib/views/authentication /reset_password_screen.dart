@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:my_member_link/myconfig.dart';
 import 'dart:developer' as developer;
-import 'package:my_member_link/views/login_screen.dart';
+import 'package:my_member_link/views/authentication%20/login_screen.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   final String email;

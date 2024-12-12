@@ -3,7 +3,7 @@ import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:my_member_link/myconfig.dart';
-import 'package:my_member_link/views/reset_password_screen.dart';
+import 'package:my_member_link/views/authentication%20/reset_password_screen.dart';
 
 class ResetPasswordCodeScreen extends StatefulWidget {
   final String email;

@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // For storing the username locally
 import 'package:http/http.dart' as http;
 import 'package:my_member_link/myconfig.dart';
-import '../components/button.dart';
-import '../components/input.dart';
-import './login_screen.dart';
+import '../../components/button.dart';
+import '../../components/input.dart';
+import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});

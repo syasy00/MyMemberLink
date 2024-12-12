@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_member_link/views/login_screen.dart';
+import 'package:my_member_link/views/authentication%20/login_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingScreen extends StatefulWidget {

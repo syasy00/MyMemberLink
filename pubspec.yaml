@@ -18,6 +18,8 @@ dependencies:
   google_sign_in: ^6.1.4
   image_picker: ^1.1.2
   image_cropper: ^8.0.2
+  permission_handler: ^10.2.0
+
 
 dev_dependencies:
   flutter_test:
@@ -41,6 +43,16 @@ flutter:
      - assets/news2.jpg
      - assets/announcement.gif
      - assets/user.jpg
+     - assets/camera.jpg
+     - assets/product_banner.png
+     - assets/clothing.png
+     - assets/gift_items.png
+     - assets/drinkware.png
+     - assets/office_supplies.png
+     - assets/accessories.png
+     - assets/merch.png
+
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

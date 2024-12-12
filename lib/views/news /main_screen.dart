@@ -7,9 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:my_member_link/models/news.dart';
 import 'package:my_member_link/myconfig.dart';
 import 'package:http/http.dart' as http;
-
 import 'new_news.dart';
-import 'mydrawer.dart';
+import '../mydrawer.dart';
 import 'search_screen.dart';
 import 'package:my_member_link/components/bottom_bar.dart';
 
@@ -199,7 +198,7 @@ class _MainScreenState extends State<MainScreen> {
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
       ),
-      drawer: const MyDrawer(),
+      drawer:MyDrawer(activePage: "Home"),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : RefreshIndicator(
