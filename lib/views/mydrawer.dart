@@ -4,6 +4,7 @@ import 'package:my_member_link/views/products/product_screen.dart';
 import 'package:my_member_link/views/news%20/main_screen.dart';
 import 'package:my_member_link/views/authentication%20/login_screen.dart';
 import 'package:my_member_link/views/events%20/event_screen.dart';
+import 'package:my_member_link/views/subscription/subscription_screen.dart';
 
 class MyDrawer extends StatefulWidget {
   final String activePage; // Pass the active page name as a parameter
@@ -90,7 +91,8 @@ class _MyDrawerState extends State<MyDrawer> {
 
           // Search Bar
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: TextField(
               decoration: InputDecoration(
                 hintText: "Search",
@@ -109,7 +111,8 @@ class _MyDrawerState extends State<MyDrawer> {
           // Navigation Items
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
               children: [
                 _buildDrawerItem(
                   icon: Icons.home_outlined,
@@ -161,6 +164,22 @@ class _MyDrawerState extends State<MyDrawer> {
                   isSelected: widget.activePage == "Payments",
                   onTap: () {
                     // Define action for Payments
+                  },
+                ),
+                _buildDrawerItem(
+                  icon: Icons.event_outlined,
+                  title: "Subscription",
+                  isSelected: widget.activePage == "Subscription",
+                  onTap: () {
+                    Navigator.pop(context); // Close drawer
+                    if (widget.activePage != "Subscription") {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SubscriptionScreen(),
+                        ),
+                      );
+                    }
                   },
                 ),
                 _buildDrawerItem(
